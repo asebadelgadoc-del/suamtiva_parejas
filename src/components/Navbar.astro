@@ -1,0 +1,761 @@
+---
+const enlaces = [
+  { nombre: "Inicio", ruta: "/", icono: "⌂" },
+  { nombre: "Lugares destacados", ruta: "/lugares", icono: "◈" },
+  { nombre: "Historia y cultura", ruta: "/historia", icono: "✦" },
+];
+
+
+const rutaActual = Astro.url.pathname;
+---
+
+
+<header class="header">
+  <div class="barra-superior">
+    <span>✦ CONOCE LA HISTORIA, CULTURA Y PATRIMONIO DE RECOLETA ✦</span>
+  </div>
+
+
+  <nav class="navbar" aria-label="Navegación principal">
+
+
+    <a href="/" class="logo">
+      <div class="logo-icono">✦</div>
+      <div class="logo-texto">
+        <span class="logo-arriba">DESCUBRE</span>
+        <span class="logo-abajo">RECOLETA<span class="punto">.</span></span>
+      </div>
+    </a>
+
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Abrir menú"
+      aria-controls="nav-links"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+
+
+    <ul class="nav-links" id="nav-links">
+      {enlaces.map((enlace) => (
+        <li>
+          <a
+            href={enlace.ruta}
+            class:list={[
+              "nav-link",
+              { activo: rutaActual === enlace.ruta }
+            ]}
+            aria-current={rutaActual === enlace.ruta ? "page" : undefined}
+          >
+            <span class="nav-icono">{enlace.icono}</span>
+            {enlace.nombre}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+
+    <a href="/lugares" class="boton-explorar">
+      <span>Explorar Recoleta</span>
+      <span class="flecha">↗</span>
+    </a>
+
+
+  </nav>
+
+
+  <div class="linea-decorativa"></div>
+</header>
+
+
+<script>
+  const boton = document.querySelector<HTMLButtonElement>(".menu-toggle");
+  const menu = document.querySelector<HTMLElement>(".nav-links");
+
+
+  boton?.addEventListener("click", () => {
+    const abierto = menu?.classList.toggle("mostrar");
+    boton.setAttribute("aria-expanded", String(Boolean(abierto)));
+    boton.setAttribute("aria-label", abierto ? "Cerrar menú" : "Abrir menú");
+    boton.textContent = abierto ? "✕" : "☰";
+  });
+</script>
+
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+  }
+
+
+  .barra-superior {
+    background: linear-gradient(90deg, #f97316, #facc15);
+    color: #172554;
+    text-align: center;
+    padding: 8px 15px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+
+
+  .navbar {
+    background: linear-gradient(110deg, #172554, #1e3a8a, #172554);
+    padding: 18px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+  }
+
+
+  /* LOGO */
+
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+
+  .logo-icono {
+    background: linear-gradient(135deg, #f97316, #facc15);
+    width: 49px;
+    height: 49px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    color: white;
+    font-size: 29px;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+    transform: rotate(-8deg);
+    transition: 0.3s;
+  }
+
+
+  .logo:hover .logo-icono {
+    transform: rotate(8deg) scale(1.1);
+  }
+
+
+  .logo-texto {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+
+
+  .logo-arriba {
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: #38bdf8;
+    font-weight: 700;
+  }
+
+
+  .logo-abajo {
+    font-size: 25px;
+    color: white;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
+
+
+  .punto {
+    color: #f97316;
+  }
+
+
+  /* ENLACES */
+
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+
+  .nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #e2e8f0;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 13px 15px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+
+  .nav-icono {
+    color: #facc15;
+    font-size: 19px;
+  }
+
+
+  .nav-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-3px);
+  }
+
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    left: 15%;
+    width: 0;
+    height: 3px;
+    background: #f97316;
+    border-radius: 5px;
+    transition: width 0.3s;
+  }
+
+
+  .nav-link:hover::after {
+    width: 70%;
+  }
+
+
+  .nav-link.activo {
+    background: rgba(249, 115, 22, 0.2);
+    color: #facc15;
+  }
+
+
+  .nav-link.activo::after {
+    width: 70%;
+  }
+
+
+  /* BOTÓN DESTACADO */
+
+
+  .boton-explorar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 14px 20px;
+    border-radius: 30px;
+    box-shadow: 0 5px 20px rgba(249, 115, 22, 0.35);
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+
+  .boton-explorar:hover {
+    background: linear-gradient(135deg, #facc15, #f97316);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.5);
+  }
+
+
+  .flecha {
+    font-size: 20px;
+    transition: transform 0.3s;
+  }
+
+
+  .boton-explorar:hover .flecha {
+    transform: translate(3px, -3px);
+  }
+
+
+  .linea-decorativa {
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      #f97316,
+      #facc15,
+      #38bdf8,
+      #f97316
+    );
+  }
+
+
+  /* MENÚ MÓVIL */
+
+
+  .menu-toggle {
+    display: none;
+    background: #f97316;
+    border: none;
+    color: white;
+    font-size: 25px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+
+  @media (max-width: 1100px) {
+    .navbar {
+      flex-wrap: wrap;
+    }
+
+
+    .menu-toggle {
+      display: block;
+      margin-left: auto;
+    }
+
+
+    .nav-links {
+      display: none;
+      order: 3;
+      flex-direction: column;
+      width: 100%;
+      padding: 15px;
+      background: #1e3a8a;
+      border-radius: 15px;
+    }
+
+
+    .nav-links.mostrar {
+      display: flex;
+    }
+
+
+    .nav-links li,
+    .nav-link {
+      width: 100%;
+    }
+
+
+    .boton-explorar {
+      display: none;
+    }
+  }
+
+
+  @media (max-width: 480px) {
+    .barra-superior {
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+
+    .navbar {
+      padding: 15px 5%;
+    }
+
+
+    .logo-abajo {
+      font-size: 20px;
+    }
+
+
+    .logo-icono {
+      width: 43px;
+      height: 43px;
+    }
+  }
+
+
+  @media (prefers-reduced-motion: reduce) {
+    .header *,
+    .header *::after {
+      transition: none;
+    }
+  }
+</style>
+
+<header class="header">
+  <div class="barra-superior">
+    <span>✦ CONOCE LA HISTORIA, CULTURA Y PATRIMONIO DE RECOLETA ✦</span>
+  </div>
+
+
+  <nav class="navbar" aria-label="Navegación principal">
+
+
+    <a href="/" class="logo">
+      <div class="logo-icono">✦</div>
+      <div class="logo-texto">
+        <span class="logo-arriba">DESCUBRE</span>
+        <span class="logo-abajo">RECOLETA<span class="punto">.</span></span>
+      </div>
+    </a>
+
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Abrir menú"
+      aria-controls="nav-links"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+
+
+    <ul class="nav-links" id="nav-links">
+      {enlaces.map((enlace) => (
+        <li>
+          <a
+            href={enlace.ruta}
+            class:list={[
+              "nav-link",
+              { activo: rutaActual === enlace.ruta }
+            ]}
+            aria-current={rutaActual === enlace.ruta ? "page" : undefined}
+          >
+            <span class="nav-icono">{enlace.icono}</span>
+            {enlace.nombre}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+
+    <a href="/lugares" class="boton-explorar">
+      <span>Explorar Recoleta</span>
+      <span class="flecha">↗</span>
+    </a>
+
+
+  </nav>
+
+
+  <div class="linea-decorativa"></div>
+</header>
+
+
+<script>
+  const boton = document.querySelector<HTMLButtonElement>(".menu-toggle");
+  const menu = document.querySelector<HTMLElement>(".nav-links");
+
+
+  boton?.addEventListener("click", () => {
+    const abierto = menu?.classList.toggle("mostrar");
+    boton.setAttribute("aria-expanded", String(Boolean(abierto)));
+    boton.setAttribute("aria-label", abierto ? "Cerrar menú" : "Abrir menú");
+    boton.textContent = abierto ? "✕" : "☰";
+  });
+</script>
+
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+  }
+
+
+  .barra-superior {
+    background: linear-gradient(90deg, #f97316, #facc15);
+    color: #172554;
+    text-align: center;
+    padding: 8px 15px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+
+
+  .navbar {
+    background: linear-gradient(110deg, #172554, #1e3a8a, #172554);
+    padding: 18px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+  }
+
+
+  /* LOGO */
+
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+
+  .logo-icono {
+    background: linear-gradient(135deg, #f97316, #facc15);
+    width: 49px;
+    height: 49px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    color: white;
+    font-size: 29px;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+    transform: rotate(-8deg);
+    transition: 0.3s;
+  }
+
+
+  .logo:hover .logo-icono {
+    transform: rotate(8deg) scale(1.1);
+  }
+
+
+  .logo-texto {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+
+
+  .logo-arriba {
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: #38bdf8;
+    font-weight: 700;
+  }
+
+
+  .logo-abajo {
+    font-size: 25px;
+    color: white;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
+
+
+  .punto {
+    color: #f97316;
+  }
+
+
+  /* ENLACES */
+
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+
+  .nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #e2e8f0;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 13px 15px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+
+  .nav-icono {
+    color: #facc15;
+    font-size: 19px;
+  }
+
+
+  .nav-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-3px);
+  }
+
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    left: 15%;
+    width: 0;
+    height: 3px;
+    background: #f97316;
+    border-radius: 5px;
+    transition: width 0.3s;
+  }
+
+
+  .nav-link:hover::after {
+    width: 70%;
+  }
+
+
+  .nav-link.activo {
+    background: rgba(249, 115, 22, 0.2);
+    color: #facc15;
+  }
+
+
+  .nav-link.activo::after {
+    width: 70%;
+  }
+
+
+  /* BOTÓN DESTACADO */
+
+
+  .boton-explorar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 14px 20px;
+    border-radius: 30px;
+    box-shadow: 0 5px 20px rgba(249, 115, 22, 0.35);
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+
+  .boton-explorar:hover {
+    background: linear-gradient(135deg, #facc15, #f97316);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.5);
+  }
+
+
+  .flecha {
+    font-size: 20px;
+    transition: transform 0.3s;
+  }
+
+
+  .boton-explorar:hover .flecha {
+    transform: translate(3px, -3px);
+  }
+
+
+  .linea-decorativa {
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      #f97316,
+      #facc15,
+      #38bdf8,
+      #f97316
+    );
+  }
+
+
+  /* MENÚ MÓVIL */
+
+
+  .menu-toggle {
+    display: none;
+    background: #f97316;
+    border: none;
+    color: white;
+    font-size: 25px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+
+  @media (max-width: 1100px) {
+    .navbar {
+      flex-wrap: wrap;
+    }
+
+
+    .menu-toggle {
+      display: block;
+      margin-left: auto;
+    }
+
+
+    .nav-links {
+      display: none;
+      order: 3;
+      flex-direction: column;
+      width: 100%;
+      padding: 15px;
+      background: #1e3a8a;
+      border-radius: 15px;
+    }
+
+
+    .nav-links.mostrar {
+      display: flex;
+    }
+
+
+    .nav-links li,
+    .nav-link {
+      width: 100%;
+    }
+
+
+    .boton-explorar {
+      display: none;
+    }
+  }
+
+
+  @media (max-width: 480px) {
+    .barra-superior {
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+
+    .navbar {
+      padding: 15px 5%;
+    }
+
+
+    .logo-abajo {
+      font-size: 20px;
+    }
+
+
+    .logo-icono {
+      width: 43px;
+      height: 43px;
+    }
+  }
+
+
+  @media (prefers-reduced-motion: reduce) {
+    .header *,
+    .header *::after {
+      transition: none;
+    }
+  }
+</style>
